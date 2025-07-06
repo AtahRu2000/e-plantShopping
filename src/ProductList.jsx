@@ -253,14 +253,23 @@ function ProductList({ onHomeClick }) {
         e.preventDefault();
         setShowCart(false);
     };
-    const [addedToCart, setAddedToCart] = useState({});
-    const handleAddToCart = (product)  => {
-        dispatch(addItem(product));
+
+    const handleAddToCart = (product) => {
+        dispatch(addItem(product)); // Dispatch the action to add the product to the cart (Redux action)
         setAddedToCart((prevState) => ({ // Update the local state to reflect that the product has been added
             ...prevState, // Spread the previous state to retain existing entries
             [product.name]: true, // Set the current product's name as a key with value 'true' to mark it as added
         }));
-    }
+    };
+
+    const calculateTotalQuantity = () => {
+        return cartItems ? cartItems.reduce((total, item) => total + (item.quantity || 1), 0) : 0;
+    };
+
+    // Check if a product is already in the cart
+    const isProductInCart = (productName) => {
+        return cartItems.some(item => item.name === productName);
+    };
     const calculateTotalQuantity = () => {
         return CartItem ? CartItem.reduce((total, item) => total + item.quantity, 0) : 0;
         };
